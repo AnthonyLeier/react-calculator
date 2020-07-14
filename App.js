@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, SafeAreaView, StyleSheet, View} from 'react-native';
 import Button from './src/components/Button';
+import Display from './src/components/Display';
 
 const App = () => {
+	const [displayValue, setDisplayValue] = useState(0);
+
 	return (
 		<SafeAreaView style={styles.container}>
+			<Display value={displayValue} />
 			<View style={styles.buttons}>
 				<Button label="AC" />
 				<Button label="/" />
