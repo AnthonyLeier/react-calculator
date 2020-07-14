@@ -16,7 +16,8 @@ export default class App extends Component {
 
 	addDigit = (n) => {
 		if (n === '.' && this.state.displayValue.includes('.')) return;
-		const clearDisplay = this.state.displayValue === '0' || this.state.clearDisplay;
+		const clearDisplay =
+			this.state.displayValue === '0' || this.state.clearDisplay;
 		const currentValue = clearDisplay ? '' : this.state.displayValue;
 		const displayValue = currentValue + n;
 		this.setState({displayValue, clearDisplay: false});
@@ -30,10 +31,33 @@ export default class App extends Component {
 	};
 
 	clearMemory = () => {
-		this.setState({...initialState});		
+		this.setState({...initialState});
 	};
 
-	setOperation = (operation) => {};
+	setOperation = (operation) => {
+		if (this.state.current === 0) {
+			this.setState({operation, current: 1, clearDisplay: true});
+		} else {
+			const equals = operation === '=';
+			const values = [...this.state.values];
+			try {
+				values[0] = eval(
+					`${values[0]} ${this.state.operation} ${values[1]}`,
+				);
+			} catch (e) {
+				values[0] = this.state.values[0];
+			}
+
+			values[1] = 0;
+			this.setState({
+				displayValue: values[0],
+				operation: equals ? null : operation,
+				current: equals ? null : 1,
+				clearDisplay: true,
+				values,
+			});
+		}
+	};
 
 	render() {
 		return (
